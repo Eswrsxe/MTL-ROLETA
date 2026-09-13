@@ -1,0 +1,79 @@
+// Este site NUNCA roda `prisma migrate` — quem cria/altera tabelas é sempre
+// o bot (pasta bot/prisma/migrations). Aqui só declaramos os modelos que a
+// roleta precisa ler/escrever, apontando pro mesmo Postgres (DATABASE_URL).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String            @id
+  discordId      String            @unique
+  coins          Int
+  spinsAvailable Int
+  rouletteSessions RouletteSession[]
+  rouletteSpins    RouletteSpin[]
+}
+
+enum RoulettePrizeDelivery {
+  AUTOMATICA
+  MANUAL
+}
+
+model RoulettePrize {
+  id           String                @id
+  name         String
+  emoji        String?
+  weight       Int
+  rewardType   String
+  rewardDetail String?
+  deliveryMode RoulettePrizeDelivery @default(MANUAL)
+  enabled      Boolean               @default(true)
+  spins        RouletteSpin[]
+}
+
+enum RouletteSessionStatus {
+  ATIVA
+  EXPIRADA
+  ENCERRADA
+}
+
+model RouletteSession {
+  id        String                @id
+  code      String                @unique
+  userId    String
+  channelId String?
+  status    RouletteSessionStatus @default(ATIVA)
+  expiresAt DateTime
+  createdAt DateTime              @default(now())
+  usedAt    DateTime?
+  user      User                  @relation(fields: [userId], references: [id])
+  spins     RouletteSpin[]
+}
+
+enum RouletteSpinDeliveryStatus {
+  NAO_APLICAVEL
+  PENDENTE
+  ENTREGUE
+}
+
+model RouletteSpin {
+  id             String                     @id @default(cuid())
+  sessionId      String
+  userId         String
+  prizeId        String
+  prizeName      String
+  channelId      String?
+  deliveryMode   RoulettePrizeDelivery
+  deliveryStatus RouletteSpinDeliveryStatus @default(PENDENTE)
+  notified       Boolean                    @default(false)
+  createdAt      DateTime                   @default(now())
+  session        RouletteSession            @relation(fields: [sessionId], references: [id])
+  user           User                       @relation(fields: [userId], references: [id])
+  prize          RoulettePrize              @relation(fields: [prizeId], references: [id])
+}
