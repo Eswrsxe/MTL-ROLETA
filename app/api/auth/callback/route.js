@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createSessionCookieValue, COOKIE_NAME, MAX_AGE_SECONDS } from "../../../../lib/session";
+import { createSessionCookieValue, COOKIE_NAME, MAX_AGE_SECONDS } from "@/lib/session";
 
 const NONCE_COOKIE = "mtl_oauth_nonce";
 
