@@ -1,8 +1,8 @@
 import crypto from "crypto";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { prisma } from "../../../../lib/prisma";
-import { verifySessionCookieValue, COOKIE_NAME } from "../../../../lib/session";
+import { prisma } from "@/lib/prisma";
+import { verifySessionCookieValue, COOKIE_NAME } from "@/lib/session";
 
 // POST /api/roleta/spin  { code: "MTL-XXXX-XXXX" }
 //
