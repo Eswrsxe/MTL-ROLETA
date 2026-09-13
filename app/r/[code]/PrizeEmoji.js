@@ -1,6 +1,6 @@
 "use client";
 
-import { parseEmoji } from "../../../lib/emoji";
+import { parseEmoji } from "./lib/emoji";
 
 export default function PrizeEmoji({ emoji, size = 28, className = "" }) {
   const parsed = parseEmoji(emoji);
