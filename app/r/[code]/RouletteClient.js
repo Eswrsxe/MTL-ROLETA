@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import PrizeEmoji from "./PrizeEmoji";
-import { parseEmoji } from "../../../lib/emoji";
-import { playWin, scheduleConstantTicks, scheduleDeceleratingTicks } from "../../../lib/sound";
+import { parseEmoji } from "@/lib/emoji";
+import { playWin, scheduleConstantTicks, scheduleDeceleratingTicks } from "@/lib/sound";
 
 // Paleta neon do MTL CRAFT, alternada entre as fatias — mantém a identidade
 // visual em vez de um arco-íris genérico de roleta.
