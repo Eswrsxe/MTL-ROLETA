@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
-import { prisma } from "../../../lib/prisma";
-import { verifySessionCookieValue, COOKIE_NAME } from "../../../lib/session";
+import { prisma } from "@/lib/prisma";
+import { verifySessionCookieValue, COOKIE_NAME } from "@/lib/session";
 import RouletteClient from "./RouletteClient";
 
 export default async function Page({ params }) {
@@ -55,10 +55,15 @@ export default async function Page({ params }) {
   }
 
   const freshUser = await prisma.user.findUnique({ where: { id: session.userId } });
+  const prizes = await prisma.roulettePrize.findMany({
+    where: { enabled: true },
+    orderBy: { id: "asc" },
+    select: { id: true, name: true, emoji: true, weight: true },
+  });
 
   return (
     <Shell>
-      <RouletteClient code={code} initialSpinsAvailable={freshUser.spinsAvailable} />
+      <RouletteClient code={code} initialSpinsAvailable={freshUser.spinsAvailable} prizes={prizes} />
     </Shell>
   );
 }
