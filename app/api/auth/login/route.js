@@ -35,7 +35,6 @@ export async function GET(request) {
   authorizeUrl.searchParams.set("response_type", "code");
   authorizeUrl.searchParams.set("scope", "identify");
   authorizeUrl.searchParams.set("state", state);
-  authorizeUrl.searchParams.set("prompt", "none");
 
   const response = NextResponse.redirect(authorizeUrl.toString());
   response.cookies.set(NONCE_COOKIE, nonce, {
